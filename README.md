@@ -51,6 +51,10 @@ npm install
 npm run dev
 \`\`\`
 
+
+
+
+<!-- ## 🔒 Developer Notes 
 ### Option 3: Full Development Setup
 \`\`\`bash
 # Install all dependencies
@@ -144,6 +148,19 @@ docker-compose up -d --build
 4. Set up monitoring
 5. Deploy with `docker-compose up -d`
 
+
+## 📄 License
+
+MIT License - see LICENSE file for details.
+
+---
+
+**Built with ❤️ using Node.js, Express, MongoDB, React, and Docker**
+
+
+- -->
+
+
 ## 📁 Project Structure
 
 \`\`\`
@@ -178,10 +195,4 @@ college-management-system/
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
 
-MIT License - see LICENSE file for details.
-
----
-
-**Built with ❤️ using Node.js, Express, MongoDB, React, and Docker**
