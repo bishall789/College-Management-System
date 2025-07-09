@@ -32,11 +32,6 @@ cd college-management-system
 # Start all services
 docker-compose up -d
 
-# Access applications
-# Backend API: http://localhost:3000
-# Frontend: http://localhost:3001
-# API Docs: http://localhost:3000/api-docs
-\`\`\`
 
 ### Option 2: Local Development
 \`\`\`bash
@@ -55,6 +50,13 @@ npm run dev
 
 
 <!-- ## 🔒 Developer Notes 
+
+# Access applications
+# Backend API: http://localhost:3000
+# Frontend: http://localhost:3001
+# API Docs: http://localhost:3000/api-docs
+\`\`\`
+
 ### Option 3: Full Development Setup
 \`\`\`bash
 # Install all dependencies
