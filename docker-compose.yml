@@ -1,0 +1,75 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: college_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: college_management
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - college_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/college_management --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+  # Backend API
+  api:
+    build: .
+    container_name: college_api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb:27017/college_management
+      - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+      - JWT_EXPIRES_IN=24h
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+      - LOG_LEVEL=info
+      - API_URL=http://localhost:3000
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - college_network
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend (Optional - for production)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: college_frontend
+    restart: unless-stopped
+    ports:
+      - "3001:80"
+    depends_on:
+      - api
+    networks:
+      - college_network
+    environment:
+      - VITE_API_URL=http://localhost:3000
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  college_network:
+    driver: bridge

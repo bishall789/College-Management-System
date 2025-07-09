@@ -1,0 +1,31 @@
+services:
+  # Test MongoDB
+  test-mongodb:
+    image: mongo:7.0
+    container_name: test_mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_DATABASE: college_management_test
+    networks:
+      - test_network
+
+  # Test API
+  test-api:
+    build: .
+    container_name: test_api
+    environment:
+      - NODE_ENV=test
+      - MONGODB_URI=mongodb://test-mongodb:27017/college_management_test
+      - JWT_SECRET=test-jwt-secret
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=admin123
+    depends_on:
+      - test-mongodb
+    networks:
+      - test_network
+    command: npm test
+
+networks:
+  test_network:
+    driver: bridge
